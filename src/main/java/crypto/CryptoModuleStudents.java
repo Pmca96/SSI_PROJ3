@@ -12,7 +12,6 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import crypto.KeyFilesManagement;
-// BATATA FRITA
 public class CryptoModuleStudents {
     private KeyFilesManagement KFM = new KeyFilesManagement();
 
@@ -65,7 +64,6 @@ public class CryptoModuleStudents {
         return data;
     }
 
-//teste
 
     /**
      *  This method needs to be modified, the following code's purpose is only to make the software work with this
