@@ -1,0 +1,8 @@
+
+#Comunication
+client.comm.server_ip=127.0.0.1
+client.comm.server_port=4446
+client.comm.client_server_port_rcv=4461
+client.comm.client_client_port_snd=4462
+client.comm.client_client_port_rcv=4463
+

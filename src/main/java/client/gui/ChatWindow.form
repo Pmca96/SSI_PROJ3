@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="client.gui.ChatWindow">
+  <grid id="27dc6" binding="mainChatPanel" layout-manager="GridLayoutManager" row-count="13" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="5" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="1039" height="429"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <component id="d576e" class="javax.swing.JTextArea" binding="chatWindowInput">
+        <constraints>
+          <grid row="10" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="5" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <minimum-size width="500" height="50"/>
+            <preferred-size width="500" height="50"/>
+            <maximum-size width="500" height="50"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-12236470"/>
+          <foreground color="-1"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <scrollpane id="b7a77">
+        <constraints>
+          <grid row="0" column="0" row-span="10" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <minimum-size width="500" height="300"/>
+            <preferred-size width="500" height="300"/>
+            <maximum-size width="500" height="300"/>
+          </grid>
+        </constraints>
+        <properties>
+          <background color="-1"/>
+        </properties>
+        <border type="line"/>
+        <children>
+          <component id="b29a6" class="javax.swing.JTextArea" binding="chatWindowOutput">
+            <constraints/>
+            <properties>
+              <background color="-12236470"/>
+              <editable value="false"/>
+              <foreground color="-1"/>
+              <lineWrap value="true"/>
+              <text value=""/>
+              <wrapStyleWord value="true"/>
+            </properties>
+            <clientProperties>
+              <html.disable class="java.lang.Boolean" value="false"/>
+            </clientProperties>
+          </component>
+        </children>
+      </scrollpane>
+      <component id="7a29" class="javax.swing.JButton" binding="sendButton">
+        <constraints>
+          <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Send"/>
+        </properties>
+      </component>
+      <scrollpane id="45eef" binding="listaContactosScrollPane">
+        <constraints>
+          <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="5d28f" class="javax.swing.JList" binding="listaContactos">
+            <constraints/>
+            <properties>
+              <model/>
+            </properties>
+          </component>
+        </children>
+      </scrollpane>
+      <component id="566ea" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Contact List"/>
+        </properties>
+      </component>
+      <vspacer id="225d6">
+        <constraints>
+          <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+    </children>
+  </grid>
+  <buttonGroups>
+    <group name="contactGroup">
+      <member id="a0589"/>
+      <member id="626b1"/>
+    </group>
+    <group name="contactGroup">
+      <member id="b6ef2"/>
+      <member id="a2825"/>
+    </group>
+  </buttonGroups>
+</form>

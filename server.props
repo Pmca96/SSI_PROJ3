@@ -1,0 +1,10 @@
+
+#Comunication
+server.comm.server_port=4446
+
+#Storage
+server.db.db_name=ssi_project
+server.db.db_user=ssi_project
+server.db.db_pass=ssi_project
+
+
