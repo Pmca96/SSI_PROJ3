@@ -53,11 +53,11 @@ public class CryptoModuleStudents {
         System.out.println(nome1);
         try {
             PublicKey key = KFM.loadPublicKey("keys/"+nome1+"_pub.der", "RSA");
-            Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");   
+            Cipher cipher = Cipher.getInstance("RSA");   
             cipher.init(Cipher.ENCRYPT_MODE, key);  
             
-            // System.out.println(new String(data));
-            // System.out.println(new String(cipher.doFinal(data)));
+            System.out.println(new String(data));
+            System.out.println(new String(cipher.doFinal(data)));
             return cipher.doFinal(data);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
             System.out.println(e.getMessage());
@@ -73,7 +73,7 @@ public class CryptoModuleStudents {
     public byte[] decrypt(byte[] data, String nome1) {
         try {
             PrivateKey key = KFM.loadPrivateKey("keys/pedro_priv.der", "RSA");
-            Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA1AndMGF1Padding");   
+            Cipher cipher = Cipher.getInstance("RSA");   
             cipher.init(Cipher.DECRYPT_MODE, key);  
             
             ByteBuffer buffer = ByteBuffer.wrap(data);
