@@ -28,15 +28,14 @@ public class DB {
     public boolean login(String username, String password) {
         PreparedStatement stmt = null;
         try {
-            stmt = con.prepareStatement("select password from user where username like ? ");
+            stmt = con.prepareStatement("select count(*) as temp from user where username like ? and password like password(?)");
             stmt.setString(1, username);
+            stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                String pass = rs.getString("password");
-                if (password.equals(pass)) {
-                    return true;
-                }
-            }
+            rs.next();
+            if (rs.getRow() == 1 )
+                return true;
+                
         } catch (SQLException e) {
             System.out.println("[DB] " + username + " failed password.");
         }
@@ -47,7 +46,7 @@ public class DB {
     public boolean createUser(String username, String password) {
         PreparedStatement stmt = null;
         try {
-            stmt = con.prepareStatement("insert into user (username, password) values(?,?)");
+            stmt = con.prepareStatement("insert into user (username, password) values(?,password(?))");
             stmt.setString(1, username);
             stmt.setString(2, password);
             stmt.execute();
@@ -56,7 +55,6 @@ public class DB {
             System.out.println("[DB] " + username + " already exists.");
         }
         return false;
-
     }
 
     public void createContact(String username, String ip, int port, int serverPort) {

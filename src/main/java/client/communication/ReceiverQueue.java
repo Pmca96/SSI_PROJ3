@@ -32,9 +32,7 @@ public class ReceiverQueue implements Runnable {
                 crypto.put(sender, new CryptoModuleStudents(ClientController.username, sender));
             }
             try {
-                System.out.println(receivedMessage.length);
-                if (crypto.get(sender).verifySignture(getSignatura(receivedMessage), sender)) {
-                    System.out.println(sender);
+                if (crypto.get(sender).verifySignture(receivedMessage)) {
                     byte[] decipheredPayload = crypto.get(sender).decrypt(receivedMessage, ClientController.username);
                     receiveQueue.add(decipheredPayload);
                 }
@@ -52,22 +50,6 @@ public class ReceiverQueue implements Runnable {
         int size = buffer.getInt();
         byte[] destinationArray = new byte[size];
         buffer.get(destinationArray, 0, size);
-        System.out.println(new String(destinationArray) + "-"+size);
         return new String(destinationArray);
-    }
-
-    private byte[] getSignatura(byte[] data) {
-        ByteBuffer buffer = ByteBuffer.wrap(data);
-
-        int lenSrc = buffer.getInt();
-        byte[] src = new byte[lenSrc];
-        buffer.get(src, 0, lenSrc);
-            //SRC = NOME
-        int cipheredLen = buffer.getInt();
-        byte[] ciphered = new byte[cipheredLen];
-        buffer.get(ciphered, 0, cipheredLen);
-        // CIPHERED = SIGNATURE
-        System.out.println("assinatura: " + new String(ciphered));
-        return ciphered;
     }
 }

@@ -1,6 +1,7 @@
 package crypto;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -36,20 +37,16 @@ public class CryptoModuleStudents {
         ByteBuffer message = ByteBuffer.allocate(srcArray.length + ciphered.length + signed.length + (4 * 3));
 
         message.putInt(srcArray.length);
-        
         message.put(srcArray);
-        message.putInt(signed.length);
-        message.put(signed);
         message.putInt(ciphered.length);
         message.put(ciphered);
-        // System.out.println(srcArray.length+ ":" + new String(srcArray)+
-        //     "\n"+signed.length+ ":" + new String(signed)+
-        //     "\n"+ciphered.length+ ":" + new String(ciphered)
-        //     );
+        message.putInt(signed.length);
+        message.put(signed);
         System.out.println(srcArray.length+ ":" + new String(srcArray)+
-            "\n"+signed.length+ 
-            "\n"+ciphered.length
+        "\n"+ciphered.length+ ":" + new String(ciphered, StandardCharsets.UTF_8) +
+            "\n"+signed.length+ ":" + new String(signed, StandardCharsets.UTF_8)
             );
+
         return message.array();
     }
 
@@ -70,8 +67,8 @@ public class CryptoModuleStudents {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, key);
 
-            System.out.println(new String(data));
-            System.out.println(new String(cipher.doFinal(data)));
+            //System.out.println(new String(data));
+            //System.out.println(new String(cipher.doFinal(data)));
             return cipher.doFinal(data);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException
                 | BadPaddingException e) {
@@ -98,16 +95,18 @@ public class CryptoModuleStudents {
             int lenSrc = buffer.getInt();
             byte[] src = new byte[lenSrc];
             buffer.get(src, 0, lenSrc);
-            //Signature
-            int signlen = buffer.getInt();
-            byte[] sign = new byte[signlen];
-            buffer.get(sign, 0, signlen);
+
             //Message
             int cipheredLen = buffer.getInt();
             byte[] ciphered = new byte[cipheredLen];
             buffer.get(ciphered, 0, cipheredLen);
 
-            System.out.println(cipher.doFinal(ciphered));
+            //Signature
+            int signlen = buffer.getInt();
+            byte[] sign = new byte[signlen];
+            buffer.get(sign, 0, signlen);
+
+            //System.out.println(cipher.doFinal(ciphered));
             ciphered = cipher.doFinal(ciphered);
             return ciphered;
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException
@@ -129,13 +128,13 @@ public class CryptoModuleStudents {
     public byte[] sign(byte[] data, String src)
             throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
         Signature signature = Signature.getInstance("SHA1withRSA");
-        SecureRandom secureRandom = new SecureRandom();
         PrivateKey key = KFM.loadPrivateKey("keys/"+src+"_priv.der", "RSA");
       
-        signature.initSign(key, secureRandom);
+        signature.initSign(key);
         signature.update(data);
 
         byte[] digitalSignature = signature.sign();
+
         return digitalSignature;
     }
     /**
@@ -143,21 +142,41 @@ public class CryptoModuleStudents {
      * @param data receives the data that was used to generate the signature
      * @return true if the signature is valid, false otherwise
      */
-    public boolean verifySignture(byte[] data, String src)
+    public boolean verifySignture(byte[] data)
         throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
-      
+    
+        ByteBuffer buffer = ByteBuffer.wrap(data);
+
+        //SRC
+        int lenSrc = buffer.getInt();
+        byte[] src = new byte[lenSrc];
+        buffer.get(src, 0, lenSrc);
+
+        //Message
+        int cipheredLen = buffer.getInt();
+        byte[] ciphered = new byte[cipheredLen];
+        buffer.get(ciphered, 0, cipheredLen);
+
+        //Signature
+        int signlen = buffer.getInt();
+        byte[] sign = new byte[signlen];
+        buffer.get(sign, 0, signlen);
+            
         Signature signature = Signature.getInstance("SHA1withRSA");
 
-        PublicKey key = KFM.loadPublicKey("keys/"+src+"_pub.der", "RSA");
-        signature.initVerify(key);
+        PublicKey key = KFM.loadPublicKey("keys/"+new String(src)+"_pub.der", "RSA");
 
-        boolean verified =  signature.verify(data);
-        /*int i = 0;
-        while (verified == false && i < data.length){
-            verified = signature.verify(Arrays.copyOfRange(data, i , i+256));
-            i++;
-        }*/
-        System.out.println("boolean: "+ verified);
-        return true;
+        signature.initVerify(key);
+        signature.update(ciphered);
+        
+        System.out.println(lenSrc+ ":" + new String(src)+
+            "\n"+ciphered.length+ ":" + new String(ciphered, StandardCharsets.UTF_8) +
+            "\n"+signlen+ ":" + new String(sign, StandardCharsets.UTF_8)
+            );
+
+
+        boolean verified =  signature.verify(sign);
+
+        return verified;
     }
 }

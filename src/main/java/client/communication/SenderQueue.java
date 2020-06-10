@@ -33,7 +33,6 @@ public class SenderQueue implements Runnable {
         try {
             while (true) {
                 Message msg = senderQueue.take();
-                System.out.println(msg);
                 byte[] serializedMessage = msg.serialize();
                 String[] contacts = new String(msg.getPayload()).split(":");
                 String dst = contacts[0];
